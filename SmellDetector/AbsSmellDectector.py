@@ -43,9 +43,11 @@ def detectImpAbs(fileObj, outputFile):
         fileObj.getNoOfServiceDeclarations() + execDecls
     if float(totalDeclarations * CONSTS.IMPABS_THRESHOLD) <= float(
             execDecls) and execDecls > CONSTS.IMPABS_MAXEXECCOUNT:
-        yield fileObj.path
+        return True
+        # yield fileObj.path
         # Utilities.reportSmell(outputFile, fileObj.fileName,
         #   CONSTS.SMELL_IMP_ABS, CONSTS.FILE_RES)
+    return False
 
 # In order to detect duplicate abstraction smell, we first run cpd on all repositories (repo wise) and the result
 # must be stored at the root of each repo in a file ending with "cpd.xml"
@@ -162,9 +164,11 @@ def detectUnnAbsInClasses(fileObj, outputFile):
     for aClass in classList:
         lineCount, textSizeCount = aClass.getBodyTextSize()
         if lineCount < CONSTS.LOC_THRESHOLD_UNNABS and textSizeCount < CONSTS.SIZE_THRESHOLD_UNNABS:
-            yield fileObj.fileName
+            yield True
+            # yield fileObj.fileName
             # Utilities.reportSmell(
             # outputFile, fileObj.fileName, CONSTS.SMELL_UNN_ABS, CONSTS.CLASS_RES)
+        yield False
 
 
 def detectUnnAbsInDefine(fileObj, outputFile):
@@ -172,14 +176,18 @@ def detectUnnAbsInDefine(fileObj, outputFile):
     for aDefine in defineList:
         lineCount, textSizeCount = aDefine.getBodyTextSize()
         if lineCount < CONSTS.LOC_THRESHOLD_UNNABS and textSizeCount < CONSTS.SIZE_THRESHOLD_UNNABS:
-            yield fileObj.fileName
+            yield True
+            # yield fileObj.fileName
             # Utilities.reportSmell(
             #     outputFile, fileObj.fileName, CONSTS.SMELL_UNN_ABS, CONSTS.DEFINE_RES)
+        yield False
 
 
 def detectUnnAbsInModules(fileObj, outputFile):
     lineCount, textSizeCount = fileObj.getBodyTextSize()
     if lineCount < CONSTS.LOC_THRESHOLD_UNNABS and textSizeCount < CONSTS.SIZE_THRESHOLD_UNNABS:
-        yield fileObj.fileName
+        # yield fileObj.fileName
+        yield True
         # Utilities.reportSmell(outputFile, fileObj.fileName,
         #                       CONSTS.SMELL_UNN_ABS, CONSTS.DEFINE_RES)
+    yield False
